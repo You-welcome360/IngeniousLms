@@ -38,6 +38,10 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
 import { reorderChapters, reorderLessons } from "../actions";
+import { NewChapterModal } from "./NewChapterModal";
+import { NewLessonModal } from "./NewLessonModal";
+import { DeleteLesson } from "./DeleteLesson";
+import { DeleteChapter } from "./DeleteChapter";
 
 interface iAppProps {
   data: AdminCourseSingularType;
@@ -288,7 +292,7 @@ export function CourseStructure({ data }: iAppProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between border-b border-border">
           <CardTitle>Chapters</CardTitle>
-          {/* <NewChapterModal courseId={data.id} /> */}
+          <NewChapterModal courseId={data.id} />
         </CardHeader>
         <CardContent className="space-y-8">
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
@@ -328,7 +332,7 @@ export function CourseStructure({ data }: iAppProps) {
                           </p>
                         </div>
 
-                        {/* <DeleteChapter chapterId={item.id} courseId={data.id} /> */}
+                        <DeleteChapter chapterId={item.id} courseId={data.id} />
                       </div>
 
                       <CollapsibleContent>
@@ -361,21 +365,21 @@ export function CourseStructure({ data }: iAppProps) {
                                       </Link>
                                     </div>
 
-                                    {/* <DeleteLesson
+                                    <DeleteLesson
                                       chapterId={item.id}
                                       courseId={data.id}
                                       lessonId={lesson.id}
-                                    /> */}
+                                    />
                                   </div>
                                 )}
                               </SortableItem>
                             ))}
                           </SortableContext>
                           <div className="p-2">
-                            {/* <NewLessonModal
+                            <NewLessonModal
                               chapterId={item.id}
                               courseId={data.id}
-                            /> */}
+                            />
                           </div>
                         </div>
                       </CollapsibleContent>
