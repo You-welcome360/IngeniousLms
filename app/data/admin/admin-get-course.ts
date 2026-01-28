@@ -1,0 +1,68 @@
+import "server-only";
+import { notFound } from "next/navigation";
+import { requireTeacherOrAdmin } from "./require-role";
+import prisma from "@/lib/db";
+
+export async function adminGetCourse(id: string) {
+  const session = await requireTeacherOrAdmin();
+  
+  // If teacher, check if they own this course
+  if (session.user.role === "teacher") {
+    const course = await prisma.course.findFirst({
+      where: { 
+        id: id,
+        userId: session.user.id 
+      }
+    });
+    
+    if (!course) {
+      notFound();
+    }
+  }
+
+  const data = await prisma.course.findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      fileKey: true,
+      price: true,
+      duration: true,
+      level: true,
+      status: true,
+      slug: true,
+      smallDescription: true,
+      category: true,
+      chapter: {
+        select: {
+          id: true,
+          title: true,
+          position: true,
+          lessons: {
+            select: {
+              id: true,
+              title: true,
+              description: true,
+              thumbnailKey: true,
+              position: true,
+              videoKey: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!data) {
+    return notFound();
+  }
+
+  return data;
+}
+
+export type AdminCourseSingularType = Awaited<
+  ReturnType<typeof adminGetCourse>
+>;
