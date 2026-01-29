@@ -39,11 +39,12 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { courseCategories, courseLevels, courseSchema, CourseSchemaType, courseStatus } from "@/lib/zodSchema";
 import { CreateCourse } from "./action";
+import { useConfetti } from "@/hooks/use-confetti";
 
 export default function CourseCreationPage() {
   const [pending, startTransition] = useTransition();
   const router = useRouter();
-//   const { triggerConfetti } = useConfetti();
+  const {triggerConfetti} = useConfetti()
 
   // 1. Define your form.
   const form = useForm<CourseSchemaType>({
@@ -74,7 +75,7 @@ export default function CourseCreationPage() {
 
       if (result.status === "success") {
         toast.success(result.message);
-        // triggerConfetti();
+        triggerConfetti();
         form.reset();
         router.push("/admin/courses");
       } else if (result.status === "error") {
