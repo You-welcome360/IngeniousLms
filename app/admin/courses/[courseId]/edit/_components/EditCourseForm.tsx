@@ -172,6 +172,7 @@ export function EditCourseForm({ data }: iAppProps) {
               <FormLabel>Thumbnail image</FormLabel>
               <FormControl>
                 <Uploader
+                  fileTypeAccepted="image"
                   onChange={field.onChange}
                   value={field.value}
                 />
