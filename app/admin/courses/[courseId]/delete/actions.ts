@@ -1,6 +1,7 @@
 "use server";
 
 import { requireTeacherOrAdmin } from "@/app/data/admin/require-role";
+import { protectAdminAction } from "@/lib/action-security";
 import prisma from "@/lib/db";
 // import { protectAdminAction } from "@/lib/action-security";
 import { ApiResponse } from "@/lib/types";
@@ -11,13 +12,13 @@ export async function deleteCourse(courseId: string): Promise<ApiResponse> {
 
   try {
     // Apply security protection for admin actions
-    // const securityCheck = await protectAdminAction(session.user.id);
-    // if (!securityCheck.success) {
-    //   return {
-    //     status: "error",
-    //     message: securityCheck.error || "Security check failed",
-    //   };
-    // }
+    const securityCheck = await protectAdminAction(session.user.id);
+    if (!securityCheck.success) {
+      return {
+        status: "error",
+        message: securityCheck.error || "Security check failed",
+      };
+    }
     await prisma.course.delete({
       where: {
         id: courseId,

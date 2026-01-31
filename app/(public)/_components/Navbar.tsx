@@ -10,7 +10,6 @@ import { UserDropdown } from './UserDropdown';
 const navigationItems = [
     {name: 'Home', href:'/'},
     {name: 'Courses', href:'/courses'},
-    {name: 'Dashboard', href:'/admin'},
 ]
 const Navbar = () => {
     const {data:session, isPending} = authClient.useSession();
@@ -25,7 +24,7 @@ const Navbar = () => {
 
             {/* Desktop navigation */}
             <nav className='hidden md:flex md:flex-1 md:items-center md:justify-between'>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-6">
                     {navigationItems.map((item)=>(
                         <Link key={item.name}
                         href={item.href}
@@ -45,7 +44,9 @@ const Navbar = () => {
                         image={session?.user.image ?? `https://avatar.vercel.sh/${session?.user}` } 
                         name={session?.user.name && session.user.name.length > 0 ?
                             session?.user.name : session?.user.email.split('@')[0]
-                        } />
+                        }
+                        role={session.user.role ?? 'user'}
+                         />
                     ):(
                         <>
                         <Link href="/login" 

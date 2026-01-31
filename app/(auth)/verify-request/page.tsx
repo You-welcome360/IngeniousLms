@@ -5,10 +5,19 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import { authClient } from "@/lib/auth-client";
 import { Loader2, LucideVerified } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react"
+import { Suspense, useState, useTransition } from "react"
 import { toast } from "sonner";
 
-const VerifyRequest = () => {
+
+export default function VerifyRequestRoute(){
+    return(
+        <Suspense>
+            <VerifyRequest />
+        </Suspense>
+    )
+}
+
+export const VerifyRequest = () => {
     const [otp, setOtp] = useState('');
     const [emailPending, startTransition] = useTransition();
     const params = useSearchParams();
@@ -84,5 +93,3 @@ const VerifyRequest = () => {
         </Card>
     )
 }
-
-export default VerifyRequest

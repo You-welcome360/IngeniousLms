@@ -1,10 +1,10 @@
 import "server-only";
-import { requireTeacherOrAdmin } from "./require-role";
 import prisma from "@/lib/db";
+import { requireAdmin } from "./require-admin";
 
 
 export async function adminGetDashboardStats() {
-  await requireTeacherOrAdmin();
+  await requireAdmin();
 
   const [totalSignups, totalCustomers, totalCourses, totalLessons] =
     await Promise.all([

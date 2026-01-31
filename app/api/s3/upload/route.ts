@@ -6,8 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3 } from "@/lib/S3Client";
 import { requireTeacherOrAdmin } from "@/app/data/admin/require-role";
-// import { protectGeneral } from "@/lib/security";
-// import { requireAdmin } from "@/app/data/admin/require-admin";
+import { protectGeneral } from "@/lib/security";
 
 const fileUploadSchema = z.object({
   fileName: z.string().min(1, { message: "Filename is required" }),
@@ -20,14 +19,14 @@ export async function POST(request: Request) {
   const session = await requireTeacherOrAdmin();
   try {
     // Apply rate limiting for file uploads (5 per minute)
-    // const securityCheck = await protectGeneral(request, session?.user.id as string, {
-    //   maxRequests: 5,
-    //   windowMs: 60000
-    // });
+    const securityCheck = await protectGeneral(request, session?.user.id as string, {
+      maxRequests: 5,
+      windowMs: 60000
+    });
     
-    // if (!securityCheck.success) {
-    //   return NextResponse.json({ error: securityCheck.error }, { status: securityCheck.status });
-    // }
+    if (!securityCheck.success) {
+      return NextResponse.json({ error: securityCheck.error }, { status: securityCheck.status });
+    }
 
     const body = await request.json();
 

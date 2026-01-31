@@ -30,7 +30,7 @@ interface iAppProps {
 }
 
 export function UserDropdown({ email, name, image, role }: iAppProps) {
-  // const dashboardHref = role === 'teacher' ? '/teacher' : role === 'admin' ? '/admin' : '/dashboard';
+  const dashboardHref = role === 'teacher' ? '/teacher' : role === 'admin' ? '/admin' : '/dashboard';
   const handleSignOut = useSignOut();
   return (
     <DropdownMenu>
@@ -71,7 +71,7 @@ export function UserDropdown({ email, name, image, role }: iAppProps) {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={'/admin'}>
+            <Link href={dashboardHref}>
               <LayoutDashboardIcon
                 size={16}
                 className="opacity-60"

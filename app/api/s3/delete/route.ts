@@ -3,6 +3,7 @@
 import { requireTeacherOrAdmin } from "@/app/data/admin/require-role";
 import { env } from "@/lib/env";
 import { S3 } from "@/lib/S3Client";
+import { protectGeneral } from "@/lib/security";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 
@@ -12,14 +13,14 @@ export async function DELETE(request: Request) {
   const session = await requireTeacherOrAdmin();
   try {
     // Apply rate limiting for file deletions (5 per minute)
-    // const securityCheck = await protectGeneral(request, session?.user.id as string, {
-    //   maxRequests: 5,
-    //   windowMs: 60000
-    // });
+    const securityCheck = await protectGeneral(request, session?.user.id as string, {
+      maxRequests: 5,
+      windowMs: 60000
+    });
 
-    // if (!securityCheck.success) {
-    //   return NextResponse.json({ error: securityCheck.error }, { status: securityCheck.status });
-    // }
+    if (!securityCheck.success) {
+      return NextResponse.json({ error: securityCheck.error }, { status: securityCheck.status });
+    }
     const body = await request.json();
 
     const key = body.key;
