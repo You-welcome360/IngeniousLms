@@ -62,6 +62,32 @@ const Navbar = () => {
                     )}
                 </div>
             </nav>
+            {/* mobile */}
+             {/* ============== MOBILE USER DROPDOWN ONLY ============== */}
+        <div className="ml-auto flex items-center gap-2 md:hidden">
+          {isPending ? null : session ? (
+            <UserDropdown
+              email={session.user.email}
+              image={
+                session.user.image ??
+                `https://avatar.vercel.sh/${session.user.email}`
+              }
+              name={
+                session.user.name && session.user.name.length > 0
+                  ? session.user.name
+                  : session.user.email.split("@")[0]
+              }
+              role={session.user.role ?? "user"}
+            />
+          ) : (
+            <Link
+              href="/login"
+              className={buttonVariants({ size: "sm" })}
+            >
+              Login
+            </Link>
+          )}
+        </div>
         </div>
     </header>
 )
