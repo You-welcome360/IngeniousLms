@@ -51,7 +51,7 @@
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/SanketsMane/LMS-Start.git
+   git clone ttps://github.com/You-welcome360/IngeniousLms
    cd LMS-Start
    ```
 
